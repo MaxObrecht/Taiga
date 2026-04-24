@@ -2,6 +2,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.FileWriter;
 import java.io.IOException;
+import com.google.gson.reflect.TypeToken;
+import java.io.FileReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectController {
 
@@ -15,6 +20,16 @@ public class ProjectController {
             gson.toJson(project, writer);
         } catch (IOException e) {
             System.out.println("Error saving project: " + e.getMessage());
+        }
+    }
+
+    public List<Project> loadProjects() {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader("projects.json")) {
+            Type listType = new TypeToken<List<Project>>(){}.getType();
+            return gson.fromJson(reader, listType);
+        } catch (IOException e) {
+            return new ArrayList<>();
         }
     }
 
