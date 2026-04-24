@@ -48,4 +48,8 @@ public class Blackboard {
         }
     }
 
+    public List<Project> getProjects() {
+        return projects;
+    }
+
 }
