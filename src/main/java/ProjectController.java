@@ -16,8 +16,10 @@ public class ProjectController {
 
     public void saveProject(Project project) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try (FileWriter writer = new FileWriter("projects.json", true)) {
-            gson.toJson(project, writer);
+        List<Project> projects = loadProjects();
+        projects.add(project);
+        try (FileWriter writer = new FileWriter("projects.json")) {
+            gson.toJson(projects, writer);
         } catch (IOException e) {
             System.out.println("Error saving project: " + e.getMessage());
         }
