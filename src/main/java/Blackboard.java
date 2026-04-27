@@ -12,6 +12,7 @@ public class Blackboard {
 
     private static Blackboard instance;
     private List<Project> projects;
+    private List<UserStory> userstorys;
 
     private Blackboard() {
         projects = loadProjectsFromFile();
@@ -52,4 +53,7 @@ public class Blackboard {
         return projects;
     }
 
+    public void addUserStory(UserStory userstory){
+        userstorys.add(userstory);
+    }
 }
