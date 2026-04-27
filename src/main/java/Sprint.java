@@ -7,7 +7,7 @@ public class Sprint {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<Story> storyList;
+    private List<UserStory> storyList;
     private int totalPoints;
     private int completedPoints;
     private int openTasks;
@@ -24,7 +24,7 @@ public class Sprint {
         this.closedTasks = 0;
     }
 
-    public List<Story> getStoryList() {
+    public List<UserStory> getStoryList() {
         return storyList;
     }
 
@@ -44,7 +44,7 @@ public class Sprint {
         return closedTasks;
     }
 
-    public void addStory(Story story) {
+    public void addStory(UserStory story) {
         storyList.add(story);
     }
 }
