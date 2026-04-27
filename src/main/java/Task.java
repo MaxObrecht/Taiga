@@ -1,12 +1,10 @@
 import java.util.ArrayList;
 
 public class Task {
-
     private String name;
     private String desc;
     private String status;
     private String assigned;
-    // private Story parentStory;
     private ArrayList<String> tags;
 
     public Task(String name, String desc, String assigned, ArrayList<String> tags) {

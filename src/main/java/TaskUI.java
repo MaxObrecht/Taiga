@@ -24,7 +24,8 @@ public class TaskUI {
                     viewTasks();
                     break;
                 case "3":
-                    System.out.println("Goodbye 👋");
+                    // Exit back to StoryUI here
+                    System.out.println("Exiting Tasks.");
                     return;
                 default:
                     System.out.println("Invalid option.");
