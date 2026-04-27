@@ -30,7 +30,7 @@ public class SprintUI {
         LocalDate endDate = LocalDate.of(Integer.parseInt(endDateInput[0]), Integer.parseInt(endDateInput[1]), Integer.parseInt(endDateInput[2]));
 
         Sprint sprint = controller.createSprint(name, startDate, endDate);
-        //controller.saveProject(project);
+        //controller.saveSprint(sprint);
 
         System.out.println("Sprint created successfully!");
         scanner.close();
