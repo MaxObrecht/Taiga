@@ -12,9 +12,11 @@ public class Blackboard {
 
     private static Blackboard instance;
     private List<Project> projects;
+    private List<Sprint> sprints;
 
     private Blackboard() {
         projects = loadProjectsFromFile();
+        sprints = getSprints();
     }
 
     public static Blackboard getInstance() {
@@ -51,5 +53,11 @@ public class Blackboard {
     public List<Project> getProjects() {
         return projects;
     }
+
+    public void addSprint(Sprint sprint) {
+        sprints.add(sprint);
+    }
+
+    public List<Sprint> getSprints() { return sprints; }
 
 }
