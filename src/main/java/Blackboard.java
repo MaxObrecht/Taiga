@@ -13,6 +13,7 @@ public class Blackboard {
     private static Blackboard instance;
     private List<Project> projects;
     private List<Sprint> sprints;
+    private List<UserStory> userstorys;
 
     private Blackboard() {
         projects = loadProjectsFromFile();
@@ -60,4 +61,10 @@ public class Blackboard {
 
     public List<Sprint> getSprints() { return sprints; }
 
+    public void addUserStory(UserStory userstory){
+        userstorys.add(userstory);
+    }
+    public List<UserStory> getUserStorys() {
+        return userstorys;
+    }
 }
