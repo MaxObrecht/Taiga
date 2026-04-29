@@ -14,6 +14,15 @@ public class Task {
         this.tags = tags;
         this.status = "NEW";
     }
+    
+    @Override
+    public String toString() {
+        return "Task: " + name + "\n" +
+            "  Description: " + desc + "\n" +
+            "  Status: " + status + "\n" +
+            "  Assigned to: " + assigned + "\n" +
+            "  Tags: " + String.join(", ", tags) + "\n";
+    }
 
     public String getName() { return name; }
     public String getDesc() { return desc; }

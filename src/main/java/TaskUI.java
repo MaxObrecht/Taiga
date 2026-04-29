@@ -43,7 +43,6 @@ public class TaskUI {
         System.out.print("Enter assigned person: ");
         String assigned = scanner.nextLine();
 
-        // NEW: Add tags during creation
         System.out.print("Enter tags (comma separated): ");
         String tagInput = scanner.nextLine();
 
