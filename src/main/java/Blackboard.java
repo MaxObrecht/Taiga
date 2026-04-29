@@ -20,6 +20,7 @@ public class Blackboard {
     private Blackboard() {
         projects = loadProjectsFromFile();
         sprints = getSprints();
+        userstorys = getUserStorys();
     }
 
     public static Blackboard getInstance() {
