@@ -26,7 +26,6 @@ public class ProjectUI {
         controller.saveProject(project);
 
         System.out.println("Project created successfully!");
-        scanner.close();
     }
 
 }
