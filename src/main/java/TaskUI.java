@@ -1,67 +1,100 @@
+import java.awt.BorderLayout;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class TaskUI {
-    private static TaskStorage taskStorage = new TaskStorage();
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
+public class TaskUI extends JFrame {
+    private TaskStorage taskStorage = new TaskStorage();
+
+    // Fields for text information
+    private JTextField nameField = new JTextField(20);
+    private JTextField descField = new JTextField(20);
+    private JTextField assignedField = new JTextField(20);
+    private JTextField tagField = new JTextField(20);
+    private JLabel tagListLabel = new JLabel();
+    private ArrayList<String> currentTags = new ArrayList<>();
+
+    // Run this when clicking create task button for a story
     public void run() {
-        Scanner scanner = new Scanner(System.in);
+        setTitle("Task Manager");
+        setSize(500, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new java.awt.BorderLayout());
 
-        while (true) {
-            System.out.println("\n=== Task Manager ===");
-            System.out.println("1. Create Task");
-            System.out.println("2. View Tasks");
-            System.out.println("3. Exit");
-            System.out.print("Choose option: ");
+        JPanel formPanel = new JPanel(new java.awt.GridLayout(0, 2, 8, 8));
+        JPanel buttonPanel = new JPanel();
 
-            String choice = scanner.nextLine();
+        formPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
 
-            switch (choice) {
-                case "1":
-                    createTask(scanner);
-                    break;
-                case "2":
-                    viewTasks();
-                    break;
-                case "3":
-                    // Exit back to StoryUI here
-                    System.out.println("Exiting Tasks.");
-                    return;
-                default:
-                    System.out.println("Invalid option.");
+        formPanel.add(new JLabel("Name"));
+        formPanel.add(nameField);
+
+        formPanel.add(new JLabel("Description"));
+        formPanel.add(descField);
+
+        formPanel.add(new JLabel("Assigned"));
+        formPanel.add(assignedField);
+
+        formPanel.add(new JLabel("Add Tag"));
+        formPanel.add(tagField);
+
+        formPanel.add(new JLabel("Current Tags"));
+        formPanel.add(tagListLabel);
+
+        JButton createBtn = new JButton("Create Task");
+        JButton addTagBtn = new JButton("Add Tag");
+        // For testing task adding functionality 
+        JButton retrieveTask = new JButton("Retrieve Task");
+        buttonPanel.add(createBtn);
+        buttonPanel.add(addTagBtn);
+        buttonPanel.add(retrieveTask);
+
+        createBtn.addActionListener(e -> createTaskNanny());
+        addTagBtn.addActionListener(e -> addTagNanny(tagField.getText()));
+        retrieveTask.addActionListener(e -> {
+            StringBuilder sb = new StringBuilder();
+            for (Task task : taskStorage.getTasks()) {
+                sb.append(task.toString()).append("\n");
             }
-        }
+
+            javax.swing.JOptionPane.showMessageDialog(this, sb.toString());
+        });
+
+        add(formPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        setVisible(true);
     }
 
-    private static void createTask(Scanner scanner) {
-        System.out.print("Enter task name (story task): ");
-        String name = scanner.nextLine();
+    private void createTaskNanny() {
+        String name = nameField.getText();
+        String desc = descField.getText();
+        String assigned = assignedField.getText();
 
-        System.out.print("Enter description: ");
-        String desc = scanner.nextLine();
-
-        System.out.print("Enter assigned person: ");
-        String assigned = scanner.nextLine();
-
-        System.out.print("Enter tags (comma separated): ");
-        String tagInput = scanner.nextLine();
-
-        ArrayList<String> tags = new ArrayList<>();
-        if (!tagInput.trim().isEmpty()) {
-            String[] splitTags = tagInput.split(",");
-            for (String tag : splitTags) {
-                tags.add(tag.trim());
-            }
-        }
-
-        Task task = new Task(name, desc, assigned, tags);
+        Task task = new Task(name, desc, assigned, new ArrayList<>(currentTags));
         taskStorage.addTask(task);
+        System.out.println("Created: " + task.getName());
 
-        System.out.println("Task added to story: " + task.getName());
+        // Reset everything after creating task
+        currentTags.clear();
+        tagListLabel.setText("");
+        nameField.setText("");
+        descField.setText("");
+        assignedField.setText("");
     }
 
-    private static void viewTasks() {
-        System.out.println("\nAll Tasks:");
-        System.out.println(taskStorage.getTasks());
+    public void addTagNanny(String tag) {
+        if (!tag.isEmpty()) {
+            currentTags.add(tag);
+            tagListLabel.setText(String.join(", ", currentTags));
+            tagField.setText(""); // clear input
+        }
     }
 }
+
