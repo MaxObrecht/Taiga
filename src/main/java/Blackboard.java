@@ -33,7 +33,7 @@ public class Blackboard {
 
     public void addProject(Project project) {
         projects.add(project);
-        saveProjectsToFile();
+        //saveProjectsToFile();
     }
 
     private List<Project> loadProjectsFromFile() {
@@ -46,14 +46,14 @@ public class Blackboard {
         }
     }
 
-    private void saveProjectsToFile() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try (FileWriter writer = new FileWriter("projects.json")) {
-            gson.toJson(projects, writer);
-        } catch (IOException e) {
-            System.out.println("Error saving to file: " + e.getMessage());
-        }
-    }
+//    private void saveProjectsToFile() {
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        try (FileWriter writer = new FileWriter("projects.json")) {
+//            gson.toJson(projects, writer);
+//        } catch (IOException e) {
+//            System.out.println("Error saving to file: " + e.getMessage());
+//        }
+//    }
 
     public List<Project> getProjects() {
         return projects;
