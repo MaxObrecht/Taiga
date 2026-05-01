@@ -92,9 +92,14 @@ public class ProjectUI extends JFrame {
     }
 
     private void createProjectNanny() {
-        String title = titleField.getText();
-        String summary = summaryField.getText();
+        String title = titleField.getText().trim();
+        String summary = summaryField.getText().trim();
         String type = (String) typeDropdown.getSelectedItem();
+
+        if (title.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Title cannot be empty.");
+            return;
+        }
 
         Project project = projectController.createProject(1, title, summary, type);
         projectController.saveProject(project);
