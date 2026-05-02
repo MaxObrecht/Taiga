@@ -1,20 +1,10 @@
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.List;
+import javax.swing.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-
-public class ProjectUI extends JFrame {
+public class ProjectUI extends JPanel {
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
     private ProjectController projectController = new ProjectController();
 
     private JTextField titleField = new JTextField(20);
@@ -23,10 +13,9 @@ public class ProjectUI extends JFrame {
     private DefaultListModel<String> listModel = new DefaultListModel<>();
     private JList<String> projectList = new JList<>(listModel);
 
-    public void run() {
-        setTitle("Project Manager");
-        setSize(600, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public ProjectUI(CardLayout cardLayout, JPanel mainPanel) {
+        this.cardLayout = cardLayout;
+        this.mainPanel = mainPanel;
         setLayout(new BorderLayout(10, 10));
 
         // --- Top: Scrollable project list ---
@@ -45,7 +34,7 @@ public class ProjectUI extends JFrame {
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 
         // --- Bottom: Create new project form ---
-        JPanel formPanel = new JPanel(new java.awt.GridLayout(0, 2, 8, 8));
+        JPanel formPanel = new JPanel(new GridLayout(0, 2, 8, 8));
         formPanel.setBorder(BorderFactory.createTitledBorder("Create New Project"));
 
         formPanel.add(new JLabel("Title"));
@@ -57,20 +46,18 @@ public class ProjectUI extends JFrame {
         formPanel.add(new JLabel("Type"));
         formPanel.add(typeDropdown);
 
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton createBtn = new JButton("Create Project");
         buttonPanel.add(createBtn);
         createBtn.addActionListener(e -> createProjectNanny());
 
+        JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.add(formPanel, BorderLayout.CENTER);
         bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
 
         add(topPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
-
-        setVisible(true);
     }
 
     private void loadProjectList() {
@@ -84,11 +71,11 @@ public class ProjectUI extends JFrame {
     private void openSelectedProject() {
         String selected = projectList.getSelectedValue();
         if (selected == null) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please select a project first.");
+            JOptionPane.showMessageDialog(this, "Please select a project first.");
             return;
         }
-        // TODO: switch to UserStoryUI, passing the selected project
-        System.out.println("Opening project: " + selected);
+        // TODO: switch to UserStoryUI when ready
+        cardLayout.show(mainPanel, "Test");
     }
 
     private void createProjectNanny() {
@@ -97,7 +84,7 @@ public class ProjectUI extends JFrame {
         String type = (String) typeDropdown.getSelectedItem();
 
         if (title.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Title cannot be empty.");
+            JOptionPane.showMessageDialog(this, "Title cannot be empty.");
             return;
         }
 
