@@ -37,9 +37,8 @@ public class Task {
     public String getDesc() { return desc; }
     public String getStatus() { return status; }
     public String getAssigned() { return assigned; }
-    public ArrayList<String> getTags() { return tags; }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public void setName(String name) { this.name = name; }
+    public void setDesc(String desc) { this.desc = desc; }
+    public void setStatus(String status) { this.status = status; }
+    public void setAssigned(String assigned) { this.assigned = assigned; }
 }

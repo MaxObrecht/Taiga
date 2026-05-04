@@ -26,21 +26,27 @@ import javax.swing.ListSelectionModel;
 
 public class TaskUI extends JPanel {
 
+    // Layout stuff
     private CardLayout cardLayout;
     private JPanel mainPanel;
-    private TaskStorage taskStorage = new TaskStorage();
 
     // Fields for text information
     private JTextField nameField = new JTextField(20);
     private JTextField descField = new JTextField(20);
     private JTextField assignedField = new JTextField(20);
     private JTextField tagField = new JTextField(20);
+    private JTextField editNameField = new JTextField(20);
+    private JTextField editDescField = new JTextField(20);
+    private JTextField editAssignedField = new JTextField(20);
 
     private JLabel tagListLabel = new JLabel();
     private DefaultListModel<String> listModel = new DefaultListModel<>();
     private JList<String> taskList = new JList<>(listModel);
 
+    // Class specific variables
+    private TaskStorage taskStorage = new TaskStorage();
     private ArrayList<String> currentTags = new ArrayList<>();
+    private Task selectedTask;
 
     public TaskUI(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
@@ -138,13 +144,68 @@ public class TaskUI extends JPanel {
 
     private void editSelectedTask() {
         String selected = taskList.getSelectedValue();
+
         if (selected == null) {
             JOptionPane.showMessageDialog(this, "Select a task first.");
             return;
         }
 
-        JOptionPane.showMessageDialog(this, "TODO");
-        // cardLayout.show(mainPanel, "TaskEdit");
+        for (Task t : taskStorage.getTasks()) {
+            if (t.getName().equals(selected)) {
+                selectedTask = t; 
+                break;
+            }
+        }
+
+        if (selectedTask == null) return;
+
+        editNameField.setText(selectedTask.getName());
+        editDescField.setText(selectedTask.getDesc());
+        editAssignedField.setText(selectedTask.getAssigned());
+
+        cardLayout.show(mainPanel, "TaskEdit");
+    }
+
+    public JPanel editPanel() {
+        JPanel editPanel = new JPanel(new BorderLayout(10, 10));
+
+        JPanel formPanel = new JPanel(new GridLayout(0, 2, 8, 8));
+        formPanel.setBorder(BorderFactory.createTitledBorder("Edit Task"));
+
+        formPanel.add(new JLabel("Name"));
+        formPanel.add(editNameField);
+
+        formPanel.add(new JLabel("Description"));
+        formPanel.add(editDescField);
+
+        formPanel.add(new JLabel("Assigned"));
+        formPanel.add(editAssignedField);
+
+        JButton saveBtn = new JButton("Save Changes");
+        JButton backBtn = new JButton("Back");
+
+        saveBtn.addActionListener(e -> saveTaskEdits());
+        backBtn.addActionListener(e -> cardLayout.show(mainPanel, "Task"));
+
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnPanel.add(saveBtn);
+        btnPanel.add(backBtn);
+
+        editPanel.add(formPanel, BorderLayout.CENTER);
+        editPanel.add(btnPanel, BorderLayout.SOUTH);
+
+        return editPanel;
+    }
+
+    private void saveTaskEdits() {
+        if (selectedTask == null) return;
+
+        selectedTask.setName(editNameField.getText().trim());
+        selectedTask.setDesc(editDescField.getText().trim());
+        selectedTask.setAssigned(editAssignedField.getText().trim());
+
+        loadTaskList();
+        cardLayout.show(mainPanel, "Task");
     }
 }
 
