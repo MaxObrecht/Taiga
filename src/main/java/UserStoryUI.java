@@ -1,17 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
-
-public class UserStoryUI extends JPanel {
-
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
+//Charles Gallo
+public class UserStoryUI extends JPanel implements PropertyChangeListener{
     private JTextField titleField;
     private JTextArea descriptionArea;
     private JTextField estimationField;
     private JTextArea outputArea;
 
-    private UserStoryController controller;
+    private UserStoryController controller = new UserStoryController();
 
-    public UserStoryUI(CardLayout cardLayout, JPanel mainPanel) {
-        controller = new UserStoryController();
+    public UserStoryUI() {
+        Blackboard.getInstance().addObserver(this);
 
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -39,7 +41,7 @@ public class UserStoryUI extends JPanel {
         createButton.addActionListener(e -> createUserStory());
 
         JButton backButton = new JButton("Back to Project");
-        backButton.addActionListener(e -> cardLayout.show(mainPanel, "Project"));
+        backButton.addActionListener(e -> ViewsManager.getInstance().showPanel("Project"));
 
         formPanel.add(createButton);
         formPanel.add(backButton);
@@ -56,7 +58,7 @@ public class UserStoryUI extends JPanel {
         String description = descriptionArea.getText().trim();
         String estimateText = estimationField.getText().trim();
 
-        if (title.isEmpty() || description.isEmpty() || estimateText.isEmpty()) {
+        if (title.isEmpty() || estimateText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields.");
             return;
         }
@@ -70,16 +72,23 @@ public class UserStoryUI extends JPanel {
             return;
         }
 
-        UserStory userStory = controller.createUserStory(title, description, estimation);
-
-        outputArea.append("User Story Created:\n");
-        outputArea.append("Title: " + title + "\n");
-        outputArea.append("Description: " + description + "\n");
-        outputArea.append("Estimation: " + estimation + "\n");
-        outputArea.append("-------------------------\n");
-
-        titleField.setText("");
-        descriptionArea.setText("");
-        estimationField.setText("");
+        controller.createUserStory(title, description, estimation);
+    }
+    private void loadUserStories() {
+        outputArea.setText("");
+        List<UserStory> stories = Blackboard.getInstance().getUserStorys();
+        for (UserStory story : stories) {
+            outputArea.append("User Story:\n");
+            outputArea.append("Title: " + story.getTitle() + "\n");
+            outputArea.append("Description: " + story.getDescription() + "\n");
+            outputArea.append("Estimation: " + story.getEstimation() + "\n");
+            outputArea.append("-------------------------\n");
+        }
+    }
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("userstorys")) {
+            loadUserStories();
+        }
     }
 }

@@ -20,7 +20,8 @@ public class Blackboard {
     private Blackboard() {
         projects = loadProjectsFromFile();
         sprints = getSprints();
-        userstorys = getUserStorys();
+        //userstorys = getUserStorys();
+        userstorys = new ArrayList<>();
         tasks = getTasks();
     }
 
@@ -58,6 +59,7 @@ public class Blackboard {
 
     public void addUserStory(UserStory userstory){
         userstorys.add(userstory);
+        support.firePropertyChange("userstorys", null, userstorys);
     }
     public List<UserStory> getUserStorys() {
         return userstorys;
