@@ -3,7 +3,7 @@ import java.util.List;
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
+//Brian Wallenrod
 public class ProjectUI extends JPanel implements PropertyChangeListener {
     private CardLayout cardLayout;
     private JPanel mainPanel;

@@ -1,5 +1,4 @@
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -8,7 +7,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class Blackboard {
@@ -47,15 +45,6 @@ public class Blackboard {
             return new ArrayList<>();
         }
     }
-
-//    private void saveProjectsToFile() {
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        try (FileWriter writer = new FileWriter("projects.json")) {
-//            gson.toJson(projects, writer);
-//        } catch (IOException e) {
-//            System.out.println("Error saving to file: " + e.getMessage());
-//        }
-//    }
 
     public List<Project> getProjects() {
         return projects;
