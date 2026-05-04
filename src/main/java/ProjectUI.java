@@ -1,8 +1,10 @@
 import java.awt.*;
 import java.util.List;
 import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class ProjectUI extends JPanel {
+public class ProjectUI extends JPanel implements PropertyChangeListener {
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private ProjectController projectController = new ProjectController();
@@ -14,6 +16,7 @@ public class ProjectUI extends JPanel {
     private JList<String> projectList = new JList<>(listModel);
 
     public ProjectUI(CardLayout cardLayout, JPanel mainPanel) {
+        Blackboard.getInstance().addObserver(this);
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         setLayout(new BorderLayout(10, 10));
@@ -75,7 +78,7 @@ public class ProjectUI extends JPanel {
             return;
         }
         // TODO: switch to UserStoryUI when ready
-        cardLayout.show(mainPanel, "Test");
+        cardLayout.show(mainPanel, "UserStory");
     }
 
     private void createProjectNanny() {
@@ -96,6 +99,13 @@ public class ProjectUI extends JPanel {
         titleField.setText("");
         summaryField.setText("");
         typeDropdown.setSelectedIndex(0);
-        loadProjectList();
     }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("projects")) {
+            loadProjectList();
+        }
+    }
+
 }

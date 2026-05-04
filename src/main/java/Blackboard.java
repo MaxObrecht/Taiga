@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,7 +35,7 @@ public class Blackboard {
 
     public void addProject(Project project) {
         projects.add(project);
-        //saveProjectsToFile();
+        support.firePropertyChange("projects", null, projects);
     }
 
     private List<Project> loadProjectsFromFile() {
@@ -78,4 +80,15 @@ public class Blackboard {
     public List<Task> getTasks() {
         return tasks;
     }
+
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+    public void addObserver(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
+
+    public void removeObserver(PropertyChangeListener listener) {
+        support.removePropertyChangeListener(listener);
+    }
+
 }
