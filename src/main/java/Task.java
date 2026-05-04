@@ -1,5 +1,14 @@
 import java.util.ArrayList;
 
+/**
+
+  * This class defines what a task is
+  *
+  * @author Tyler Page
+  * @version 1.0
+  *
+**/
+
 public class Task {
     private String name;
     private String desc;

@@ -15,6 +15,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
+/**
+
+  * This class setups the UI for creating and editing tasks
+  *
+  * @author Tyler Page
+  * @version 1.0
+  *
+**/
+
 public class TaskUI extends JPanel {
 
     private CardLayout cardLayout;
