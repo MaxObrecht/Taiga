@@ -13,6 +13,7 @@ public class Main {
         CardLayout cardLayout = new CardLayout();
         JPanel mainPanel = new JPanel(cardLayout);
 
+        mainPanel.add(new LoginUI(cardLayout, mainPanel), "Login");
         mainPanel.add(new ProjectUI(cardLayout, mainPanel), "Project");
         mainPanel.add(new TestUI(cardLayout, mainPanel), "Test");
         // mainPanel.add(new UserStoryUI(cardLayout, mainPanel), "UserStory");
@@ -21,7 +22,7 @@ public class Main {
 
         frame.add(mainPanel);
         frame.setVisible(true);
-        cardLayout.show(mainPanel, "Project");
+        cardLayout.show(mainPanel, "Login");
     }
 
 }
