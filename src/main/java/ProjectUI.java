@@ -15,7 +15,7 @@ public class ProjectUI extends JPanel implements PropertyChangeListener {
     private DefaultListModel<String> listModel = new DefaultListModel<>();
     private JList<String> projectList = new JList<>(listModel);
 
-    public ProjectUI(CardLayout cardLayout, JPanel mainPanel) {
+    public ProjectUI() {
         Blackboard.getInstance().addObserver(this);
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
@@ -77,8 +77,7 @@ public class ProjectUI extends JPanel implements PropertyChangeListener {
             JOptionPane.showMessageDialog(this, "Please select a project first.");
             return;
         }
-        // TODO: switch to UserStoryUI when ready
-        cardLayout.show(mainPanel, "UserStory");
+        ViewsManager.getInstance().showPanel("UserStory");
     }
 
     private void createProjectNanny() {

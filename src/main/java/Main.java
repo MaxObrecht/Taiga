@@ -1,31 +1,13 @@
-import java.awt.CardLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 public class Main {
-
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Taiga");
-        frame.setSize(600, 500);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ViewsManager vm = ViewsManager.getInstance();
 
-        CardLayout cardLayout = new CardLayout();
-        JPanel mainPanel = new JPanel(cardLayout);
+        vm.addPanel(new ProjectUI(), "Project");
+        vm.addPanel(new UserStoryUI(), "UserStory");
+        //vm.addPanel(new SprintUI(), "Sprint");
+        //vm.addPanel(new TaskUI(), "Task");
+        vm.addPanel(new TestUI(), "Test");
 
-        TaskUI taskUI = new TaskUI(cardLayout, mainPanel);
-
-        mainPanel.add(new LoginUI(cardLayout, mainPanel), "Login");
-        mainPanel.add(new ProjectUI(cardLayout, mainPanel), "Project");
-        mainPanel.add(new TestUI(cardLayout, mainPanel), "Test");
-        mainPanel.add(new UserStoryUI(cardLayout, mainPanel), "UserStory");
-        mainPanel.add(taskUI, "Task");
-        mainPanel.add(taskUI.editPanel(), "TaskEdit");
-        // mainPanel.add(new SprintUI(cardLayout, mainPanel), "Sprint");
-
-        frame.add(mainPanel);
-        frame.setVisible(true);
-        cardLayout.show(mainPanel, "Task");
+        vm.start("Project");
     }
-
 }
