@@ -13,16 +13,19 @@ public class Main {
         CardLayout cardLayout = new CardLayout();
         JPanel mainPanel = new JPanel(cardLayout);
 
+        TaskUI taskUI = new TaskUI(cardLayout, mainPanel);
+
         mainPanel.add(new LoginUI(cardLayout, mainPanel), "Login");
         mainPanel.add(new ProjectUI(cardLayout, mainPanel), "Project");
         mainPanel.add(new TestUI(cardLayout, mainPanel), "Test");
         mainPanel.add(new UserStoryUI(cardLayout, mainPanel), "UserStory");
-        // mainPanel.add(new TaskUI(cardLayout, mainPanel), "Task");
+        mainPanel.add(taskUI, "Task");
+        mainPanel.add(taskUI.editPanel(), "TaskEdit");
         // mainPanel.add(new SprintUI(cardLayout, mainPanel), "Sprint");
 
         frame.add(mainPanel);
         frame.setVisible(true);
-        cardLayout.show(mainPanel, "Login");
+        cardLayout.show(mainPanel, "Task");
     }
 
 }
