@@ -10,7 +10,12 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
     private JTextField estimationField;
     private JTextArea outputArea;
 
+//    private JTextField sprintNameField;
+//    private JComboBox<UserStory> userStoryComboBox;
+//    private JComboBox<Sprint> sprintComboBox;
+
     private UserStoryController controller = new UserStoryController();
+//    private SprintController sprintcontroller = new SprintController();
 
     public UserStoryUI() {
         Blackboard.getInstance().addObserver(this);
@@ -40,6 +45,25 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         JButton createButton = new JButton("+ Add User Story");
         createButton.addActionListener(e -> createUserStory());
 
+//        formPanel.add(createButton);
+//        formPanel.add(new JSeparator());
+//        sprintNameField = new JTextField();
+//        formPanel.add(new JLabel("Sprint Name:"));
+//        formPanel.add(sprintNameField);
+//        JButton createSprintButton = new JButton("+ Create Sprint");
+//        createSprintButton.addActionListener(e -> createSprint());
+//        formPanel.add(createSprintButton);
+//        formPanel.add(new JSeparator());
+//        userStoryComboBox = new JComboBox<>();
+//        sprintComboBox = new JComboBox<>();
+//        formPanel.add(new JLabel("Select User Story:"));
+//        formPanel.add(userStoryComboBox);
+//        formPanel.add(new JLabel("Select Sprint:"));
+//        formPanel.add(sprintComboBox);
+//        JButton moveToSprintButton = new JButton("Move Story to Sprint");
+//        moveToSprintButton.addActionListener(e -> moveStoryToSprint());
+//        formPanel.add(moveToSprintButton);
+
         JButton backButton = new JButton("Back to Project");
         backButton.addActionListener(e -> ViewsManager.getInstance().showPanel("Project"));
 
@@ -51,6 +75,10 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         outputArea = new JTextArea(8, 30);
         outputArea.setEditable(false);
         add(new JScrollPane(outputArea), BorderLayout.SOUTH);
+
+//        refreshUserStoryComboBox();
+//        refreshSprintComboBox();
+//        loadUserStories();
     }
 
     private void createUserStory() {
@@ -74,6 +102,22 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
 
         controller.createUserStory(title, description, estimation);
     }
+
+//    private void moveStoryToSprint() {
+//        UserStory selectedStory = (UserStory) userStoryComboBox.getSelectedItem();
+//        Sprint selectedSprint = (Sprint) sprintComboBox.getSelectedItem();
+//
+//        if (selectedStory == null || selectedSprint == null) {
+//            JOptionPane.showMessageDialog(this, "Please select both a user story and a sprint.");
+//            return;
+//        }
+//
+//        sprintController.addUserStoryToSprint(selectedSprint, selectedStory);
+//
+//        JOptionPane.showMessageDialog(this, "User story moved to sprint.");
+//        loadUserStories();
+//    }
+
     private void loadUserStories() {
         outputArea.setText("");
         List<UserStory> stories = Blackboard.getInstance().getUserStorys();
@@ -85,10 +129,36 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
             outputArea.append("-------------------------\n");
         }
     }
+
+//    private void refreshUserStoryComboBox() {
+//        userStoryComboBox.removeAllItems();
+//
+//        List<UserStory> stories = Blackboard.getInstance().getUserStorys();
+//
+//        for (UserStory story : stories) {
+//            userStoryComboBox.addItem(story);
+//        }
+//    }
+//
+//    private void refreshSprintComboBox() {
+//        sprintComboBox.removeAllItems();
+//
+//        List<Sprint> sprints = Blackboard.getInstance().getSprints();
+//
+//        for (Sprint sprint : sprints) {
+//            sprintComboBox.addItem(sprint);
+//        }
+//    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("userstorys")) {
             loadUserStories();
         }
     }
+
+//    @Override
+//    public String toString() {
+//        return title;
+//    }
 }
