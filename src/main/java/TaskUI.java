@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -26,10 +25,6 @@ import javax.swing.ListSelectionModel;
 
 public class TaskUI extends JPanel {
 
-    // Layout stuff
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
-
     // Fields for text information
     private JTextField nameField = new JTextField(20);
     private JTextField descField = new JTextField(20);
@@ -48,9 +43,7 @@ public class TaskUI extends JPanel {
     private ArrayList<String> currentTags = new ArrayList<>();
     private Task selectedTask;
 
-    public TaskUI(CardLayout cardLayout, JPanel mainPanel) {
-        this.cardLayout = cardLayout;
-        this.mainPanel = mainPanel;
+    public TaskUI() {
 
         setLayout(new BorderLayout(10, 10));
 
@@ -163,7 +156,7 @@ public class TaskUI extends JPanel {
         editDescField.setText(selectedTask.getDesc());
         editAssignedField.setText(selectedTask.getAssigned());
 
-        cardLayout.show(mainPanel, "TaskEdit");
+        ViewsManager.getInstance().showPanel("TaskEdit");
     }
 
     public JPanel editPanel() {
@@ -185,7 +178,7 @@ public class TaskUI extends JPanel {
         JButton backBtn = new JButton("Back");
 
         saveBtn.addActionListener(e -> saveTaskEdits());
-        backBtn.addActionListener(e -> cardLayout.show(mainPanel, "Task"));
+        backBtn.addActionListener(e -> ViewsManager.getInstance().showPanel("Task"));
 
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnPanel.add(saveBtn);
@@ -205,7 +198,7 @@ public class TaskUI extends JPanel {
         selectedTask.setAssigned(editAssignedField.getText().trim());
 
         loadTaskList();
-        cardLayout.show(mainPanel, "Task");
+        ViewsManager.getInstance().showPanel("Task");
     }
 }
 

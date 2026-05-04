@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
@@ -20,8 +19,6 @@ import javax.swing.JTextField;
 **/
 
 public class LoginUI extends JPanel{
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
 
     private JTextField nameField = new JTextField(12);
     private JTextField passField = new JTextField(12);
@@ -30,9 +27,8 @@ public class LoginUI extends JPanel{
 
     LoginStorage storage = new LoginStorage();
 
-    public LoginUI(CardLayout cardLayout, JPanel mainPanel) {
-        this.cardLayout = cardLayout;
-        this.mainPanel = mainPanel;
+    public LoginUI() {
+
         setLayout(new BorderLayout(10, 10));
 
         JPanel formPanel = new JPanel(new GridLayout(0, 2, 2, 2));
@@ -42,7 +38,7 @@ public class LoginUI extends JPanel{
         loginBtn.addActionListener(e -> 
             {
                 if (storage.validateLogin(nameField.getText().trim(), passField.getText().trim())) {
-                    cardLayout.show(mainPanel, "Project");
+                    ViewsManager.getInstance().showPanel("Project");
                 } else {
                     JOptionPane.showMessageDialog(this, "Invalid Login");
                 }
