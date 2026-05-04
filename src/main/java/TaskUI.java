@@ -1,13 +1,24 @@
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
-public class TaskUI extends JFrame {
+public class TaskUI extends JPanel {
+
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
     private TaskStorage taskStorage = new TaskStorage();
 
     // Fields for text information
@@ -15,27 +26,34 @@ public class TaskUI extends JFrame {
     private JTextField descField = new JTextField(20);
     private JTextField assignedField = new JTextField(20);
     private JTextField tagField = new JTextField(20);
+
     private JLabel tagListLabel = new JLabel();
+    private DefaultListModel<String> listModel = new DefaultListModel<>();
+    private JList<String> taskList = new JList<>(listModel);
+
     private ArrayList<String> currentTags = new ArrayList<>();
 
-    // Run this when clicking create task button for a story
-    public void taskCreation() {
-        // Remove whatever was there previously
-        //getContentPane().removeAll();
-        //repaint();
-        //revalidate();
+    public TaskUI(CardLayout cardLayout, JPanel mainPanel) {
+        this.cardLayout = cardLayout;
+        this.mainPanel = mainPanel;
 
-        setTitle("Create Task");
-        setSize(500, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new BorderLayout(10, 10));
 
-        JPanel formPanel = new JPanel(new java.awt.GridLayout(0, 2, 8, 8));
-        JPanel buttonPanel = new JPanel();
+        taskList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(taskList);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Tasks"));
 
-        formPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 5));
+        loadTaskList();
+
+        JButton editBtn = new JButton("Edit Task");
+        editBtn.addActionListener(e -> editSelectedTask());
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.add(scrollPane, BorderLayout.CENTER);
+        topPanel.add(editBtn, BorderLayout.SOUTH);
+
+        JPanel formPanel = new JPanel(new GridLayout(0, 2, 8, 8));
+        formPanel.setBorder(BorderFactory.createTitledBorder("Create Task"));
 
         formPanel.add(new JLabel("Name"));
         formPanel.add(nameField);
@@ -52,109 +70,72 @@ public class TaskUI extends JFrame {
         formPanel.add(new JLabel("Current Tags"));
         formPanel.add(tagListLabel);
 
-        JButton createBtn = new JButton("Create Task");
         JButton addTagBtn = new JButton("Add Tag");
-        // For testing task adding functionality 
-        JButton retrieveTask = new JButton("Retrieve Task");
-        JButton editTasks = new JButton("Edit Task");
-        buttonPanel.add(createBtn);
-        buttonPanel.add(addTagBtn);
-        buttonPanel.add(retrieveTask);
-        buttonPanel.add(editTasks);
+        JButton createBtn = new JButton("Create Task");
 
+        addTagBtn.addActionListener(e -> addTagNanny());
         createBtn.addActionListener(e -> createTaskNanny());
-        addTagBtn.addActionListener(e -> addTagNanny(tagField.getText()));
-        retrieveTask.addActionListener(e -> {
-            StringBuilder sb = new StringBuilder();
-            for (Task task : taskStorage.getTasks()) {
-                sb.append(task.toString()).append("\n");
-            }
 
-            javax.swing.JOptionPane.showMessageDialog(this, sb.toString());
-        });
-        editTasks.addActionListener(e -> {
-            formPanel.setVisible(false);
-            buttonPanel.setVisible(false);
-            taskEdit();
-        });
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(addTagBtn);
+        buttonPanel.add(createBtn);
 
-        add(formPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(formPanel, BorderLayout.CENTER);
+        bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        setVisible(true);
+        add(topPanel, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    // Run this when clicking edit task/card button in sprint view
-    public void taskEdit() {
-        Task task = taskStorage.getTasks().get(0);
-
-        //getContentPane().removeAll();
-        //repaint();
-        //revalidate();
-
-        setTitle("Task Edit");
-        setSize(500, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new java.awt.BorderLayout());
-
-        JPanel formPanel = new JPanel(new java.awt.GridLayout(0, 2, 8, 8));
-        JPanel buttonPanel = new JPanel();
-
-        formPanel.add(new JLabel("Current"));
-        formPanel.add(new JLabel("New"));
-
-        formPanel.add(new JLabel("Name:" + task.getName()));
-
-
-        formPanel.add(new JLabel("Description:" + task.getDesc()));
-
-        add(formPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        JButton saveBtn = new JButton("Save changes");
-        JButton exitBtn = new JButton("Exit");
-        
-        buttonPanel.add(saveBtn);
-        buttonPanel.add(exitBtn);
-
-        saveBtn.addActionListener(e -> System.out.println("Changed"));
-        exitBtn.addActionListener(e -> {
-            formPanel.setVisible(false);
-            buttonPanel.setVisible(false);
-            taskCreation();
-        });
-
-        setVisible(true);
+    private void loadTaskList() {
+        listModel.clear();
+        for (Task t : taskStorage.getTasks()) {
+            listModel.addElement(t.getName());
+        }
     }
 
     private void createTaskNanny() {
-        String name = nameField.getText();
-        String desc = descField.getText();
-        String assigned = assignedField.getText();
+        String name = nameField.getText().trim();
+        String desc = descField.getText().trim();
+        String assigned = assignedField.getText().trim();
 
         if (name.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Name can't be blank");
+            JOptionPane.showMessageDialog(this, "Name can't be blank");
             return;
         }
 
         Task task = new Task(name, desc, assigned, new ArrayList<>(currentTags));
         taskStorage.addTask(task);
-        System.out.println("Created: " + task.getName());
 
-        // Reset everything after creating task
+        // Reset
         currentTags.clear();
         tagListLabel.setText("");
         nameField.setText("");
         descField.setText("");
         assignedField.setText("");
+
+        loadTaskList();
     }
 
-    public void addTagNanny(String tag) {
+    private void addTagNanny() {
+        String tag = tagField.getText().trim();
         if (!tag.isEmpty()) {
             currentTags.add(tag);
             tagListLabel.setText(String.join(", ", currentTags));
-            tagField.setText(""); // clear input
+            tagField.setText("");
         }
+    }
+
+    private void editSelectedTask() {
+        String selected = taskList.getSelectedValue();
+        if (selected == null) {
+            JOptionPane.showMessageDialog(this, "Select a task first.");
+            return;
+        }
+
+        JOptionPane.showMessageDialog(this, "TODO");
+        // cardLayout.show(mainPanel, "TaskEdit");
     }
 }
 
