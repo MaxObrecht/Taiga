@@ -28,4 +28,9 @@ public class UserStory {
     public List<Task> getTasks(){
         return tasks;
     }
+
+    @Override
+    public String toString(){
+        return getTitle();
+    }
 }

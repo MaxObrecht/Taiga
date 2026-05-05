@@ -8,14 +8,14 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
     private JTextField titleField;
     private JTextArea descriptionArea;
     private JTextField estimationField;
-    private JTextArea outputArea;
+    //private JTextArea outputArea;
 
-//    private JTextField sprintNameField;
-//    private JComboBox<UserStory> userStoryComboBox;
-//    private JComboBox<Sprint> sprintComboBox;
+    private JList<UserStory> userStoryList;
+    private DefaultListModel<UserStory> userStoryListModel;
+    private JComboBox<Sprint> sprintComboBox;
 
     private UserStoryController controller = new UserStoryController();
-//    private SprintController sprintcontroller = new SprintController();
+    private SprintController sprintcontroller = new SprintController();
 
     public UserStoryUI() {
         Blackboard.getInstance().addObserver(this);
@@ -23,7 +23,7 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JLabel header = new JLabel("Create User Story");
+        JLabel header = new JLabel("User Stories");
         header.setFont(new Font("Arial", Font.BOLD, 22));
         add(header, BorderLayout.NORTH);
 
@@ -44,41 +44,36 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
 
         JButton createButton = new JButton("+ Add User Story");
         createButton.addActionListener(e -> createUserStory());
+        formPanel.add(createButton);
 
-//        formPanel.add(createButton);
-//        formPanel.add(new JSeparator());
-//        sprintNameField = new JTextField();
-//        formPanel.add(new JLabel("Sprint Name:"));
-//        formPanel.add(sprintNameField);
-//        JButton createSprintButton = new JButton("+ Create Sprint");
-//        createSprintButton.addActionListener(e -> createSprint());
-//        formPanel.add(createSprintButton);
-//        formPanel.add(new JSeparator());
-//        userStoryComboBox = new JComboBox<>();
-//        sprintComboBox = new JComboBox<>();
-//        formPanel.add(new JLabel("Select User Story:"));
-//        formPanel.add(userStoryComboBox);
-//        formPanel.add(new JLabel("Select Sprint:"));
-//        formPanel.add(sprintComboBox);
-//        JButton moveToSprintButton = new JButton("Move Story to Sprint");
-//        moveToSprintButton.addActionListener(e -> moveStoryToSprint());
-//        formPanel.add(moveToSprintButton);
+        formPanel.add(new JSeparator());
+
+        sprintComboBox = new JComboBox<>();
+
+        formPanel.add(new JLabel("Select Sprint:"));
+        formPanel.add(sprintComboBox);
+
+        JButton moveToSprintButton = new JButton("Move Selected Story to Sprint");
+        moveToSprintButton.addActionListener(e -> moveStoryToSprint());
+        formPanel.add(moveToSprintButton);
 
         JButton backButton = new JButton("Back to Project");
         backButton.addActionListener(e -> ViewsManager.getInstance().showPanel("Project"));
-
-        formPanel.add(createButton);
         formPanel.add(backButton);
 
         add(formPanel, BorderLayout.CENTER);
 
-        outputArea = new JTextArea(8, 30);
-        outputArea.setEditable(false);
-        add(new JScrollPane(outputArea), BorderLayout.SOUTH);
+        userStoryListModel = new DefaultListModel<>();
+        userStoryList = new JList<>(userStoryListModel);
+        userStoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-//        refreshUserStoryComboBox();
-//        refreshSprintComboBox();
-//        loadUserStories();
+        add(new JScrollPane(userStoryList), BorderLayout.SOUTH);
+
+        loadUserStories();
+        JButton createSprintButton = new JButton("+ Create Sprint");
+        createSprintButton.addActionListener(e -> ViewsManager.getInstance().showPanel("Sprint"));
+        formPanel.add(createSprintButton);
+        //refreshSprintComboBox();
     }
 
     private void createUserStory() {
@@ -101,45 +96,33 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         }
 
         controller.createUserStory(title, description, estimation);
+        titleField.setText("");
+        descriptionArea.setText("");
+        estimationField.setText("");
     }
 
-//    private void moveStoryToSprint() {
-//        UserStory selectedStory = (UserStory) userStoryComboBox.getSelectedItem();
-//        Sprint selectedSprint = (Sprint) sprintComboBox.getSelectedItem();
-//
-//        if (selectedStory == null || selectedSprint == null) {
-//            JOptionPane.showMessageDialog(this, "Please select both a user story and a sprint.");
-//            return;
-//        }
-//
-//        sprintController.addUserStoryToSprint(selectedSprint, selectedStory);
-//
-//        JOptionPane.showMessageDialog(this, "User story moved to sprint.");
-//        loadUserStories();
-//    }
+    private void moveStoryToSprint() {
+        UserStory selectedStory = userStoryList.getSelectedValue();
+        Sprint selectedSprint = (Sprint) sprintComboBox.getSelectedItem();
+
+        if (selectedStory == null || selectedSprint == null) {
+            JOptionPane.showMessageDialog(this, "Please select both a user story and a sprint.");
+            return;
+        }
+
+        //sprintcontroller.addUserStoryToSprint(selectedSprint, selectedStory);
+    }
 
     private void loadUserStories() {
-        outputArea.setText("");
+        userStoryListModel.clear();
+
         List<UserStory> stories = Blackboard.getInstance().getUserStorys();
+
         for (UserStory story : stories) {
-            outputArea.append("User Story:\n");
-            outputArea.append("Title: " + story.getTitle() + "\n");
-            outputArea.append("Description: " + story.getDescription() + "\n");
-            outputArea.append("Estimation: " + story.getEstimation() + "\n");
-            outputArea.append("-------------------------\n");
+            userStoryListModel.addElement(story);
         }
     }
 
-//    private void refreshUserStoryComboBox() {
-//        userStoryComboBox.removeAllItems();
-//
-//        List<UserStory> stories = Blackboard.getInstance().getUserStorys();
-//
-//        for (UserStory story : stories) {
-//            userStoryComboBox.addItem(story);
-//        }
-//    }
-//
 //    private void refreshSprintComboBox() {
 //        sprintComboBox.removeAllItems();
 //
