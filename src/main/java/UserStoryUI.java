@@ -73,7 +73,13 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         JButton createSprintButton = new JButton("+ Create Sprint");
         createSprintButton.addActionListener(e -> ViewsManager.getInstance().showPanel("Sprint"));
         formPanel.add(createSprintButton);
-        //refreshSprintComboBox();
+        refreshSprintComboBox();//
+
+        //
+        JButton openSprintBoardButton = new JButton("Open Sprint Board");
+        openSprintBoardButton.addActionListener(e -> openSprintBoard());
+        formPanel.add(openSprintBoardButton);
+        //
     }
 
     private void createUserStory() {
@@ -110,7 +116,7 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
             return;
         }
 
-        //sprintcontroller.addUserStoryToSprint(selectedSprint, selectedStory);
+        sprintcontroller.addUserStoryToSprint(selectedSprint, selectedStory);//
     }
 
     private void loadUserStories() {
@@ -123,20 +129,39 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         }
     }
 
-//    private void refreshSprintComboBox() {
-//        sprintComboBox.removeAllItems();
-//
-//        List<Sprint> sprints = Blackboard.getInstance().getSprints();
-//
-//        for (Sprint sprint : sprints) {
-//            sprintComboBox.addItem(sprint);
-//        }
-//    }
+    private void refreshSprintComboBox() {
+        sprintComboBox.removeAllItems();
+
+        List<Sprint> sprints = Blackboard.getInstance().getSprints();
+
+        for (Sprint sprint : sprints) {
+            sprintComboBox.addItem(sprint);
+        }
+    }
+
+    //
+    private void openSprintBoard() {
+        Sprint selectedSprint = (Sprint) sprintComboBox.getSelectedItem();
+
+        if (selectedSprint == null) {
+            JOptionPane.showMessageDialog(this, "Please select a sprint first.");
+            return;
+        }
+
+        SprintBoardUI board = new SprintBoardUI(selectedSprint);
+        ViewsManager.getInstance().addPanel(board, "SprintBoard");
+        ViewsManager.getInstance().showPanel("SprintBoard");
+    }
+    //
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("userstorys")) {
             loadUserStories();
+        }
+
+        if (evt.getPropertyName().equals("sprints")) {
+            refreshSprintComboBox();
         }
     }
 

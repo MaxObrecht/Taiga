@@ -19,10 +19,10 @@ public class Blackboard {
 
     private Blackboard() {
         projects = loadProjectsFromFile();
-        sprints = getSprints();
+        sprints = new ArrayList<>();;
         //userstorys = getUserStorys();
         userstorys = new ArrayList<>();
-        tasks = getTasks();
+        tasks = new ArrayList<>();
     }
 
     public static Blackboard getInstance() {
@@ -53,6 +53,7 @@ public class Blackboard {
 
     public void addSprint(Sprint sprint) {
         sprints.add(sprint);
+        support.firePropertyChange("sprints", null, sprints);
     }
 
     public List<Sprint> getSprints() { return sprints; }
@@ -67,9 +68,18 @@ public class Blackboard {
 
     public void addTask(Task task) {
         tasks.add(task);
+        support.firePropertyChange("tasks", null, tasks);
     }
     public List<Task> getTasks() {
         return tasks;
+    }
+
+    public Task getLatestTask() {
+        if (tasks.isEmpty()) {
+            return null;
+        }
+
+        return tasks.get(tasks.size() - 1);
     }
 
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -80,6 +90,10 @@ public class Blackboard {
 
     public void removeObserver(PropertyChangeListener listener) {
         support.removePropertyChangeListener(listener);
+    }
+
+    public void fireSprintChanged() {
+        support.firePropertyChange("sprints", null, sprints);
     }
 
 }
