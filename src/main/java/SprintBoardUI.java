@@ -128,7 +128,6 @@ public class SprintBoardUI extends JPanel implements PropertyChangeListener {
 
     private JPanel buildStoryRow(UserStory story) {
         JPanel row = new JPanel(new GridLayout(1, 5, 5, 5));
-        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
         row.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
         row.add(buildStoryCell(story));
@@ -138,6 +137,7 @@ public class SprintBoardUI extends JPanel implements PropertyChangeListener {
         row.add(buildTaskColumn(story, "CLOSED"));
 
         return row;
+
     }
 
     private JPanel buildStoryCell(UserStory story) {
