@@ -5,8 +5,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 //Brian Wallenrod
 public class ProjectUI extends JPanel implements PropertyChangeListener {
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
     private ProjectController projectController = new ProjectController();
 
     private JTextField titleField = new JTextField(20);
@@ -17,8 +15,6 @@ public class ProjectUI extends JPanel implements PropertyChangeListener {
 
     public ProjectUI() {
         Blackboard.getInstance().addObserver(this);
-        this.cardLayout = cardLayout;
-        this.mainPanel = mainPanel;
         setLayout(new BorderLayout(10, 10));
 
         // --- Top: Scrollable project list ---
@@ -84,13 +80,13 @@ public class ProjectUI extends JPanel implements PropertyChangeListener {
         String title = titleField.getText().trim();
         String summary = summaryField.getText().trim();
         String type = (String) typeDropdown.getSelectedItem();
-
+        int proj_id = Blackboard.getInstance().getNextProjectId();
         if (title.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Title cannot be empty.");
             return;
         }
 
-        Project project = projectController.createProject(1, title, summary, type);
+        Project project = projectController.createProject(proj_id, title, summary, type);
         projectController.saveProject(project);
 
         System.out.println("Created: " + project.getTitle());
