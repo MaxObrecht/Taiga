@@ -1,19 +1,19 @@
-import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Sprint {
     //name, start date, end date, story-list, total points, completed points, open tasks, closed tasks
     private String name;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private List<UserStory> storyList;
     private int totalPoints;
     private int completedPoints;
     private int openTasks;
     private int closedTasks;
 
-    public Sprint(String name, LocalDate startDate, LocalDate endDate) {
+    public Sprint(String name, String startDate, String endDate) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -25,26 +25,42 @@ public class Sprint {
     }
 
     public List<UserStory> getStoryList() {
-        return storyList;
+        return this.storyList;
     }
 
     public int getTotalPoints() {
-        return totalPoints;
+        return this.totalPoints;
     }
 
     public int getCompletedPoints() {
-        return completedPoints;
+        return this.completedPoints;
     }
 
     public int getOpenTasks() {
-        return openTasks;
+        return this.openTasks;
     }
 
     public int getClosedTasks() {
-        return closedTasks;
+        return this.closedTasks;
     }
 
     public void addStory(UserStory story) {
         storyList.add(story);
+    }
+
+    public String getName() {
+        return this.name;
+    }
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public String getStartDate() {
+        return this.startDate;
+    }
+
+    public String getEndDate() {
+        return this.endDate;
     }
 }

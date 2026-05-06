@@ -115,6 +115,7 @@ public class TaskUI extends JPanel {
 
         Task task = new Task(name, desc, assigned, new ArrayList<>(currentTags));
         taskStorage.addTask(task);
+        Blackboard.getInstance().addTask(task);
 
         // Reset
         currentTags.clear();
