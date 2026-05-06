@@ -96,4 +96,7 @@ public class Blackboard {
         support.firePropertyChange("sprints", null, sprints);
     }
 
+    public int getNextProjectId() {
+        return projects.size() + 1;
+    }
 }
