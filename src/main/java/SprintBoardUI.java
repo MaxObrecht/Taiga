@@ -1,3 +1,14 @@
+/**
+
+ * This class is doing the following ...
+ *
+ * Handles the observer logic SprintBoardUI. The SpintBoard holds stories, tasks, and information about
+ * the progress of the sprint. Refreshes when stories and tasks are added. Initiates fires to the task UI.
+ *
+ * @author Max Obrecht
+ * @version 1.0
+ *
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;

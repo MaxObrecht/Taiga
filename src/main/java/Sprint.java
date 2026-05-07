@@ -1,9 +1,17 @@
+/**
 
+ * This class is doing the following ...
+ *
+ * Constructor for Sprint with setters and getters
+ *
+ * @author Max Obrecht
+ * @version 1.0
+ *
+ */
 import java.util.ArrayList;
 import java.util.List;
 
 public class Sprint {
-    //name, start date, end date, story-list, total points, completed points, open tasks, closed tasks
     private String name;
     private String startDate;
     private String endDate;

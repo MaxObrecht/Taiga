@@ -1,3 +1,13 @@
+/**
+
+ * This class is doing the following ...
+ *
+ * Handles the observer logic SprintUI for creating a sprint
+ *
+ * @author Max Obrecht
+ * @version 1.0
+ *
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
