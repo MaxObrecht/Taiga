@@ -1,9 +1,10 @@
-//This class is the controller for the user stories
+/**This class is the controller for the user stories
+ * and is responsible for sending userstories to the blackboard
+ *
+ * @author Charles Gallo
+ */
 public class UserStoryController {
     public UserStory createUserStory(String title, String description, int estimation){
-//        UserStory userstory = new UserStory(title, description, estimation);
-//        Blackboard.getInstance().addUserStory(userstory);
-//        return userstory;
         return new UserStory(title, description, estimation);
     }
     public void saveUserStory(UserStory userstory){

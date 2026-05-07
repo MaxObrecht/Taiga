@@ -1,3 +1,11 @@
+/**
+ * This class is responsible for creating the userstory object
+ * and creating its attributes, along with getters and setters
+ * for those attributes
+ *
+ * @author Charles Gallo
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 public class UserStory {

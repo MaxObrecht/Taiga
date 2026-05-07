@@ -20,7 +20,6 @@ public class Blackboard {
     private Blackboard() {
         projects = loadProjectsFromFile();
         sprints = new ArrayList<>();;
-        //userstorys = getUserStorys();
         userstorys = new ArrayList<>();
         tasks = new ArrayList<>();
     }
