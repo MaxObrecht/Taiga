@@ -1,6 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Singleton that manages the main JFrame and panel navigation.
+ * Uses CardLayout to switch between panels in the application.
+ *
+ * @author Brian Wallenrod
+ * @version 2.0
+ */
 public class ViewsManager {
 
     private static ViewsManager instance;

@@ -3,7 +3,14 @@ import java.util.List;
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-//Brian Wallenrod
+/**
+ * A JPanel that displays the project list and project creation form.
+ * Implements PropertyChangeListener to automatically refresh when
+ * the Blackboard is updated.
+ *
+ * @author Brian Wallenrod
+ * @version 2.0
+ */
 public class ProjectUI extends JPanel implements PropertyChangeListener {
     private ProjectController projectController = new ProjectController();
 

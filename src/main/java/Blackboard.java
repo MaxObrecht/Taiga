@@ -9,6 +9,14 @@ import java.beans.PropertyChangeSupport;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * Singleton shared data structure for the Taiga system.
+ * Stores all projects, sprints, user stories, and tasks.
+ * Uses PropertyChangeSupport to notify observers when data changes.
+ *
+ * @author Brian Wallenrod
+ * @version 2.0
+ */
 public class Blackboard {
 
     private static Blackboard instance;

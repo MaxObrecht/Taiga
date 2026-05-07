@@ -1,4 +1,10 @@
-//Brian Wallenrod
+/**
+ * Represents a project in the Taiga system.
+ * Stores project details including id, title, summary, and type.
+ *
+ * @author Brian Wallenrod
+ * @version 2.0
+ */
 public class Project {
 
     private int id;
