@@ -2,6 +2,7 @@
  * as well as providing access to the sprint UI
  *
  * @author Charles Gallo
+ * @version 1.0
  */
 import javax.swing.*;
 import java.awt.*;

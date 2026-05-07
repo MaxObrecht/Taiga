@@ -4,6 +4,7 @@
  * for those attributes
  *
  * @author Charles Gallo
+ * @version 1.0
  */
 
 import java.util.ArrayList;

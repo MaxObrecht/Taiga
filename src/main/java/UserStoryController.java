@@ -2,6 +2,7 @@
  * and is responsible for sending userstories to the blackboard
  *
  * @author Charles Gallo
+ * @version 1.0
  */
 public class UserStoryController {
     public UserStory createUserStory(String title, String description, int estimation){
