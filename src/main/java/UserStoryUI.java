@@ -1,3 +1,8 @@
+/**This class is responsible for everything displayed on screen for userstories,
+ * as well as providing access to the sprint UI
+ *
+ * @author Charles Gallo
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -5,7 +10,6 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Objects;
 
-//Charles Gallo
 public class UserStoryUI extends JPanel implements PropertyChangeListener{
     private JTextField titleField;
     private JTextArea descriptionArea;
@@ -15,8 +19,8 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
     private DefaultListModel<UserStory> userStoryListModel;
     private JComboBox<Sprint> sprintComboBox;
 
-    private UserStoryController controller = new UserStoryController();
-    private SprintController sprintcontroller = new SprintController();
+    private UserStoryController userstoryController = new UserStoryController();
+    private SprintController sprintController = new SprintController();
 
     public UserStoryUI() {
         Blackboard.getInstance().addObserver(this);
@@ -107,7 +111,9 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
             }
         }
 
-        controller.createUserStory(title, description, estimation);
+        UserStory userstory = userstoryController.createUserStory(title, description, estimation);
+        userstoryController.saveUserStory(userstory);
+
         titleField.setText("");
         descriptionArea.setText("");
         estimationField.setText("");
@@ -121,7 +127,7 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
             JOptionPane.showMessageDialog(this, "Please select both a user story and a sprint.");
             return;
         }
-        sprintcontroller.addUserStoryToSprint(selectedSprint, selectedStory);
+        sprintController.addUserStoryToSprint(selectedSprint, selectedStory);
         selectedStory.setAssignedToSprint(true);
         loadUserStories();
     }
