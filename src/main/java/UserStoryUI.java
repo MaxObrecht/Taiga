@@ -3,12 +3,13 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Objects;
+
 //Charles Gallo
 public class UserStoryUI extends JPanel implements PropertyChangeListener{
     private JTextField titleField;
     private JTextArea descriptionArea;
     private JTextField estimationField;
-    //private JTextArea outputArea;
 
     private JList<UserStory> userStoryList;
     private DefaultListModel<UserStory> userStoryListModel;
@@ -43,7 +44,7 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         formPanel.add(estimationField);
 
         JButton createButton = new JButton("+ Add User Story");
-        createButton.addActionListener(e -> createUserStory());
+        createButton.addActionListener(e -> createUserStoryNanny());
         formPanel.add(createButton);
 
         formPanel.add(new JSeparator());
@@ -73,16 +74,14 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         JButton createSprintButton = new JButton("+ Create Sprint");
         createSprintButton.addActionListener(e -> ViewsManager.getInstance().showPanel("Sprint"));
         formPanel.add(createSprintButton);
-        refreshSprintComboBox();//
+        refreshSprintComboBox();
 
-        //
         JButton openSprintBoardButton = new JButton("Open Sprint Board");
         openSprintBoardButton.addActionListener(e -> openSprintBoard());
         formPanel.add(openSprintBoardButton);
-        //
     }
 
-    private void createUserStory() {
+    private void createUserStoryNanny() {
         String title = titleField.getText().trim();
         String description = descriptionArea.getText().trim();
         String estimateText = estimationField.getText().trim();
@@ -100,6 +99,13 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
             JOptionPane.showMessageDialog(this, "Estimation must be an integer.");
             return;
         }
+        List<UserStory> stories = Blackboard.getInstance().getUserStorys();
+        for (UserStory story : stories) {
+            if (Objects.equals(title, story.getTitle())) {
+                JOptionPane.showMessageDialog(this, "A story with this name already exists, select another");
+                return;
+            }
+        }
 
         controller.createUserStory(title, description, estimation);
         titleField.setText("");
@@ -115,8 +121,9 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
             JOptionPane.showMessageDialog(this, "Please select both a user story and a sprint.");
             return;
         }
-
-        sprintcontroller.addUserStoryToSprint(selectedSprint, selectedStory);//
+        sprintcontroller.addUserStoryToSprint(selectedSprint, selectedStory);
+        selectedStory.setAssignedToSprint(true);
+        loadUserStories();
     }
 
     private void loadUserStories() {
@@ -125,7 +132,9 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         List<UserStory> stories = Blackboard.getInstance().getUserStorys();
 
         for (UserStory story : stories) {
-            userStoryListModel.addElement(story);
+            if (!story.isAssignedToSprint()) {
+                userStoryListModel.addElement(story);
+            }
         }
     }
 
@@ -139,7 +148,6 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         }
     }
 
-    //
     private void openSprintBoard() {
         Sprint selectedSprint = (Sprint) sprintComboBox.getSelectedItem();
 
@@ -152,7 +160,6 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
         ViewsManager.getInstance().addPanel(board, "SprintBoard");
         ViewsManager.getInstance().showPanel("SprintBoard");
     }
-    //
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -164,9 +171,4 @@ public class UserStoryUI extends JPanel implements PropertyChangeListener{
             refreshSprintComboBox();
         }
     }
-
-//    @Override
-//    public String toString() {
-//        return title;
-//    }
 }

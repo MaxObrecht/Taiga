@@ -5,6 +5,7 @@ public class UserStory {
     private String description;
     private int estimation;
     private List<Task> tasks;
+    private boolean assignedToSprint;
 
     public UserStory(String title, String description, int estimation) {
         this.title = title;
@@ -27,6 +28,14 @@ public class UserStory {
 
     public List<Task> getTasks(){
         return tasks;
+    }
+
+    public boolean isAssignedToSprint(){
+        return assignedToSprint;
+    }
+
+    public void setAssignedToSprint(boolean assigned){
+        this.assignedToSprint = assigned;
     }
 
     @Override
